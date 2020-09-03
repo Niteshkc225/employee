@@ -37,3 +37,62 @@ Feature: Testing employee REST API
     Examples:
       |employeeName   |
       |virat123       |
+
+  Scenario Outline: Verify create Employee
+    When create employee with <employeeName>,<fullName>,<lastName>,<email>,<password>,<phone> and <employeeStatus>
+    Then a success message should be returned for create
+
+    Examples:
+      |employeeName|fullName|lastName|email        |password|phone     |employeeStatus|
+      |MarkGill    |Mark    |Gill    |mark@rebo.nl |password|062222222 |0             |
+
+  Scenario Outline: Verify error message when create Employee with invalid name
+    When create employee with <employeeName>,<fullName>,<lastName>,<email>,<password>,<phone> and <employeeStatus>
+    Then error message should be thrown for invalid body
+
+    Examples:
+      |employeeName|fullName|lastName|email        |password|phone     |employeeStatus|
+      |MarkGill?/  |Mark    |Gill    |mark@rebo.nl |password|062222222 |0             |
+
+  Scenario Outline: Verify Update Employee
+    When update employee name of <employeeName> with <newEmployeeName>,<fullName>,<lastName>,<email>,<password>,<phone> and <employeeStatus>
+    Then a success message should be returned for update
+
+    Examples:
+      |employeeName|newEmployeeName|fullName|lastName|email        |password|phone     |employeeStatus|
+      |virat       |MarkGill       |Mark    |Gill    |mark@rebo.nl |password|062222222 |0             |
+
+  Scenario Outline: Verify error message when update Employee with invalid name
+    When update employee name of <employeeName> with <newEmployeeName>,<fullName>,<lastName>,<email>,<password>,<phone> and <employeeStatus>
+    Then error message should be thrown for invalid body
+
+    Examples:
+      |employeeName|newEmployeeName|fullName|lastName|email        |password|phone     |employeeStatus|
+      |virat       |MarkGill?/     |Mark    |Gill    |mark@rebo.nl |password|062222222 |0             |
+
+  Scenario Outline: Verify error message when update Employee which does not exist
+    When update employee name of <employeeName> with <newEmployeeName>,<fullName>,<lastName>,<email>,<password>,<phone> and <employeeStatus>
+    Then not found should be returned
+    And error message employee not found should be returned
+
+    Examples:
+      |employeeName|newEmployeeName|fullName|lastName|email        |password|phone     |employeeStatus|
+      |virat123     |MarkGill      |Mark    |Gill    |mark@rebo.nl |password|062222222 |0             |
+
+  Scenario Outline: Verify Delete Employee
+    When update delete employee with name <employeeName>
+    Then the server should return a success status
+
+    Examples:
+    |employeeName|
+    |virat       |
+
+  Scenario Outline: Verify error message when delete an employee who does not exist
+    When update delete employee with name <employeeName>
+    Then not found should be returned
+    And error message employee not found should be returned
+
+    Examples:
+      |employeeName|
+      |virat123    |
+
